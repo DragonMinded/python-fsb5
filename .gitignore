@@ -59,3 +59,7 @@ target/
 # Samples for testing
 samples/
 out/
+
+# VIM
+*.swp
+*.swo
