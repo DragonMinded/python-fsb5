@@ -166,10 +166,15 @@ class FSB5:
 
             if MetadataChunkType.FREQUENCY in chunks:
                 frequency = chunks[MetadataChunkType.FREQUENCY][0]
+                del chunks[MetadataChunkType.FREQUENCY]
             elif frequency in frequency_values:
                 frequency = frequency_values[frequency]
             else:
                 raise ValueError("Frequency value %d is not valid and no FREQUENCY metadata chunk was provided")
+
+            if MetadataChunkType.CHANNELS in chunks:
+                channels = chunks[MetadataChunkType.CHANNELS][0]
+                del chunks[MetadataChunkType.CHANNELS]
 
             self.samples.append(Sample(
                 name="%04d" % (i),
@@ -221,6 +226,9 @@ class FSB5:
                 return pcm_rebuild(sample, 4)
             elif self.header.mode == SoundFormat.PCMFLOAT:
                 return rebuild_float(sample, 4)
+        elif self.header.mode == SoundFormat.IMAADPCM:
+            # TODO: IMAADPCM
+            return sample.data[:sample.samples * sample.channels]
 
         raise NotImplementedError("Decoding samples of type %s is not supported" % (self.header.mode))
 
