@@ -12,7 +12,7 @@ def rebuild(sample, width):
 	return ret.getvalue()
 
 def rebuild_float(sample, width):
-	data = sample.data[:sample.samples * width]
+	data = sample.data[:sample.samples * sample.channels * width]
 	ret = BytesIO()
 	with PCMFloatWave_write(ret) as wav:
 		wav.setparams((sample.channels, width, sample.frequency, 0, "NONE", "NONE"))
